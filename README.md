@@ -1,2 +1,1 @@
-# Mf Boilerplate Api
-
+# Firebase Authenication Testing
