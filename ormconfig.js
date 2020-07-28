@@ -1,8 +1,10 @@
+require("dotenv").config();
+
 const host = process.env.DB_HOST || "localhost";
-const port = process.env.DB_PORT || 3307;
+const port = process.env.DB_PORT || 3306;
 const username = process.env.DB_USERNAME || "root";
 const password = process.env.DB_PASSWORD || "root";
-const database = process.env.DB_DATABASE || "mf_auth";
+const database = process.env.DB_DATABASE || "auth";
 
 module.exports = {
   type: "mysql",
