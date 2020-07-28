@@ -20,16 +20,7 @@ async function bootstrap() {
     resolvers: [__dirname + "/schema/resolvers/**/*.{ts,js}"],
     validate: false,
   });
-
-  const server = new ApolloServer({
-    schema,
-    context: ({ req }) => {
-      const token = req.headers.authorization || "";
-      const user = getUser(token);
-      return { user };
-    },
-  });
-
+  const server = new ApolloServer({ schema });
 
   server.listen().then(({ url }) => {
     console.log(url);

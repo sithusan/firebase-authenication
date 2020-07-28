@@ -1,39 +1,34 @@
 import { Resolver, Query, Mutation, Arg } from "type-graphql";
 import { User } from "schema/types/User";
-import { AddUserInput } from "./inputTypes/AddUser";
-
+import {
+  getCurrentUser,
+  signInWithPassword,
+  signUp,
+  siginInWithToken,
+} from "../../app/auth/index";
+import { AddUserInput } from "./inputTypes/AddUserInput";
+import { Auth } from "../types/Auth";
 @Resolver()
 class UserResolver {
-  private userCollections: User[] = [
-    {
-      id: "1",
-      name: "Aung Aung",
-      age: 23,
-      address: "Yangon",
-      family: ["Mother", "Father"],
-    },
-    {
-      id: "2",
-      name: "Ko Aung",
-      age: 13,
-      address: "Mandalay",
-      family: ["Mother", "Father", "Brother"],
-    },
-  ];
-
-  @Query((returns) => [User])
-  async users(): Promise<User[]> {
-    return await this.userCollections;
-  }
+  private userCollections: User[] = [];
 
   @Query((returns) => User)
-  async user(@Arg("id", { nullable: true }) id?: string): Promise<User> {
-    return await this.userCollections.find((user) => user.id === id);
+  async currentUser(): Promise<User> {
+    return await getCurrentUser();
   }
 
-  @Mutation((returns) => [User])
-  async addUser(@Arg("data") data: AddUserInput): Promise<User[]> {
-    this.userCollections.push(data);
-    return await this.userCollections;
+  @Mutation((returns) => Auth)
+  async signInUser(@Arg("data") data: AddUserInput): Promise<Auth> {
+    return await signInWithPassword(data);
+  }
+
+  @Mutation((returns) => Auth)
+  async signUp(@Arg("data") data: AddUserInput): Promise<Auth> {
+    return signUp(data);
+  }
+
+  @Mutation((returns) => Auth)
+  async signInWithToken(@Arg("token") token: string): Promise<Auth> {
+    return siginInWithToken(token);
   }
 }
