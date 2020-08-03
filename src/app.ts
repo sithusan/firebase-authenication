@@ -3,17 +3,10 @@ import { ApolloServer } from "apollo-server";
 import { buildSchema } from "type-graphql";
 import { createConnection, Connection } from "typeorm";
 import * as firebase from "firebase";
+import * as admin from "firebase-admin";
+import firebaseConfig from "./app/config/firebase";
 
-var app = firebase.initializeApp({
-  apiKey: "AIzaSyAJSJFxp4MpUEuZ_025DxBwnlDRSilVM5s",
-  authDomain: "test-authenication-f4abb.firebaseapp.com",
-  databaseURL: "https://test-authenication-f4abb.firebaseio.com",
-  projectId: "test-authenication-f4abb",
-  storageBucket: "test-authenication-f4abb.appspot.com",
-  messagingSenderId: "498215024399",
-  appId: "1:498215024399:web:05fa3621c8ec7c7acb307a",
-  measurementId: "G-SLXNEB1NPF",
-});
+var app = firebase.initializeApp(firebaseConfig);
 
 async function bootstrap() {
   const schema = await buildSchema({
@@ -24,6 +17,10 @@ async function bootstrap() {
 
   server.listen().then(({ url }) => {
     console.log(url);
+  });
+
+  admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
   });
 
   const connection: Connection = await createConnection();
