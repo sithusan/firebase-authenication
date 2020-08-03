@@ -6,8 +6,6 @@ import * as firebase from "firebase";
 import * as admin from "firebase-admin";
 import firebaseConfig from "./app/config/firebase";
 
-var app = firebase.initializeApp(firebaseConfig);
-
 async function bootstrap() {
   const schema = await buildSchema({
     resolvers: [__dirname + "/schema/resolvers/**/*.{ts,js}"],
@@ -19,12 +17,14 @@ async function bootstrap() {
     console.log(url);
   });
 
+  const connection: Connection = await createConnection();
+  if (connection.isConnected) console.log("Database connection is ready.");
+
+  var app = firebase.initializeApp(firebaseConfig);
+
   admin.initializeApp({
     credential: admin.credential.applicationDefault(),
   });
-
-  const connection: Connection = await createConnection();
-  if (connection.isConnected) console.log("Database connection is ready.");
 }
 
 bootstrap();

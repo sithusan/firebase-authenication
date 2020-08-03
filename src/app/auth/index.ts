@@ -3,6 +3,8 @@ import "firebase/auth";
 import { Auth } from "schema/types/Auth";
 import { AddUserInput } from "schema/resolvers/inputTypes/AddUserInput";
 import { User } from "schema/types/User";
+import { UpdateUserInput } from "schema/resolvers/inputTypes/UpdateUserInput";
+import * as admin from "firebase-admin";
 
 export const getCurrentUser = async (): Promise<User> => {
   const user = await firebase.auth().currentUser;
@@ -17,6 +19,45 @@ export const getCurrentUser = async (): Promise<User> => {
       id: "User is not logged in",
       name: "User is not logged in",
       email: "User is not logged in",
+    };
+  }
+};
+
+export const deleteUserById = async ({
+  uid,
+}: UpdateUserInput): Promise<Auth> => {
+  try {
+    await admin.auth().deleteUser(uid);
+    return {
+      uid,
+      message: "Successfully Deleted User",
+    };
+  } catch (error) {
+    return {
+      message: error.message,
+      errors: error.code,
+    };
+  }
+};
+
+export const updateUser = async ({
+  uid,
+  email,
+  name,
+}: UpdateUserInput): Promise<Auth> => {
+  try {
+    await admin.auth().updateUser(uid, {
+      email,
+      displayName: name,
+    });
+    return {
+      uid,
+      message: "Successfully Updated User",
+    };
+  } catch (error) {
+    return {
+      message: error.message,
+      errors: error.code,
     };
   }
 };

@@ -5,9 +5,12 @@ import {
   signInWithPassword,
   signUp,
   siginInWithToken,
+  deleteUserById,
+  updateUser,
 } from "../../app/auth/index";
 import { AddUserInput } from "./inputTypes/AddUserInput";
 import { Auth } from "../types/Auth";
+import { UpdateUserInput } from "./inputTypes/UpdateUserInput";
 @Resolver()
 class UserResolver {
   private userCollections: User[] = [];
@@ -15,6 +18,16 @@ class UserResolver {
   @Query((returns) => User)
   async currentUser(): Promise<User> {
     return await getCurrentUser();
+  }
+
+  @Mutation((returns) => Auth)
+  async deleteUserById(@Arg("data") data: UpdateUserInput): Promise<Auth> {
+    return deleteUserById(data);
+  }
+
+  @Mutation((returns) => Auth)
+  async updateUser(@Arg("data") data: UpdateUserInput): Promise<Auth> {
+    return updateUser(data);
   }
 
   @Mutation((returns) => Auth)
