@@ -19,7 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/jest": "^26.0.0",
-    "apollo-server": "^2.14.2",
+    "apollo-server": "^2.25.3",
     "class-validator": "^0.12.2",
     "dot-env": "0.0.1",
     "dotenv": "^8.2.0",
